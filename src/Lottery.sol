@@ -2,7 +2,6 @@ pragma solidity ^0.8.13;
 import {console} from "forge-std/console.sol";
 
 contract Lottery{
-    
     mapping(address => bool)[] public participant;
     mapping(address => uint) public to_give;
     mapping(uint => address[])[] public picked_history;
@@ -50,6 +49,7 @@ contract Lottery{
     }
     function claim() external{
         require(block.timestamp >= start_time + 24 hours, "Cant claim while in phase");
+        require(state == 0, "Cant claim while in phase");
         if (to_give[msg.sender] > 0)
         {
             msg.sender.call{value: to_give[msg.sender]}("");
